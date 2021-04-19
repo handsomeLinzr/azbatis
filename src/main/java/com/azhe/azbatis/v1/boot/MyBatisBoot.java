@@ -10,8 +10,9 @@ public class MyBatisBoot {
 
     public static void main(String[] args) {
         AZSqlSession sqlSession = new AZSqlSession(new AZConfiguration(), new AZExecutor());
-        BlogMapper blogMapper = sqlSession.getMapper(BlogMapper.class);
-        Blog blog = blogMapper.selectBlogById(1);
+        BlogMapper mapper = sqlSession.getMapper(BlogMapper.class);
+        System.out.println(mapper);
+        Blog blog = mapper.selectBlogById(1);
         System.out.println(blog);
     }
 

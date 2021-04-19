@@ -26,7 +26,7 @@ public class AZExecutor {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
             // 打开连接
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mybatistest?serverTimezone=UTC&useSSL=false", "root", "1003");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mybatis-test?serverTimezone=UTC&useSSL=false", "root", "1003");
 
             // 执行查询
             stmt = conn.createStatement();
@@ -52,11 +52,15 @@ public class AZExecutor {
             e.printStackTrace();
         } finally {
             try {
-                if (stmt != null) stmt.close();
+                if (stmt != null) {
+                    stmt.close();
+                }
             } catch (SQLException se2) {
             }
             try {
-                if (conn != null) conn.close();
+                if (conn != null) {
+                    conn.close();
+                }
             } catch (SQLException se) {
                 se.printStackTrace();
             }
