@@ -70,10 +70,11 @@ public class Configuration {
      */
     private void scanPackage(String mapperPath) {
         String basePath = MyBatisBoot.class.getResource("/").getPath();
+        mapperPath = mapperPath.replace(".", File.separator);
         String packagePath = basePath + mapperPath;
         doScan(new File(packagePath));  // 扫描路径下的所有class文件
-        for (String classPath : classPaths) {
-            
+        for (String className : classPaths) {
+
         }
     }
 
@@ -90,7 +91,16 @@ public class Configuration {
      * @param file
      */
     private void doScan(File file) {
-
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            for (File f : files) {
+                doScan(f);
+            }
+        } else {
+            if (file.getName().endsWith(".class")) {
+                classPaths.add(file.getPath());
+            }
+        }
     }
 
     /**
