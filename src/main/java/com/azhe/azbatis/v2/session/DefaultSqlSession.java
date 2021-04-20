@@ -42,10 +42,10 @@ public class DefaultSqlSession {
      * @param <T>
      * @return
      */
-    public <T> T selectOne(String statementId, Object[] parameters) {
+    public <T> T selectOne(String statementId, Object[] parameters, Class<T> clazz) {
         // 获得对应的sql语句
         String sql = getConfiguration().getMappedStatement(statementId);
-        return executor.query(sql, parameters);
+        return executor.query(sql, parameters, clazz);
     }
 
 }

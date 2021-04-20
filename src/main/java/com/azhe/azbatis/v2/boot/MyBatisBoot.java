@@ -16,12 +16,11 @@ import com.azhe.azbatis.v2.session.SqlSessionFactory;
 public class MyBatisBoot {
 
     public static void main(String[] args) {
-        SqlSessionFactory sqlSessionFactory = SqlSessionFactory.build();
-        DefaultSqlSession sqlSession = sqlSessionFactory.openSession();
-        BlogMapper mapper = sqlSession.getMapper(BlogMapper.class);
-        Blog blog = mapper.selectBlogById(1);
-        System.out.println(mapper);
-        System.out.println(blog);
+//        SqlSessionFactory sqlSessionFactory = SqlSessionFactory.build();
+//        DefaultSqlSession sqlSession = sqlSessionFactory.openSession();
+//        BlogMapper mapper = sqlSession.getMapper(BlogMapper.class);
+//        Blog blog = mapper.selectBlogById(2);
+//        System.out.println(blog);
     }
 
 }

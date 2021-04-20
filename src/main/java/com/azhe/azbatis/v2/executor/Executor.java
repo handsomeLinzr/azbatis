@@ -10,6 +10,6 @@ package com.azhe.azbatis.v2.executor;
  */
 public interface Executor {
 
-    <T> T query(String sql, Object[] parameters);
+    <T> T query(String sql, Object[] parameters, Class<T> clazz);
 
 }

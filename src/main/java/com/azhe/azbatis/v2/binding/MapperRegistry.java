@@ -20,8 +20,8 @@ public class MapperRegistry {
     /**
      * 添加 mapper接口和对应的代理工厂的关系
      */
-    public void addMapper(Class<?> clazz) {
-        knownMappers.put(clazz, new MapperProxyFactory<>(clazz));
+    public void addMapper(Class<?> clazz, Class<?> pojoClass) {
+        knownMappers.put(clazz, new MapperProxyFactory<>(clazz, pojoClass));
     }
 
     /**

@@ -3,10 +3,7 @@ package com.azhe.azbatis.v2.executor;
 import com.azhe.azbatis.v2.parameter.ParameterHandler;
 import com.azhe.azbatis.v2.session.Configuration;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * Description: 封装jdbc，用于操作数据库，4大对象之一
@@ -20,19 +17,31 @@ public class StatementHandler {
 
     private ResultSetHandler resultSetHandler = new ResultSetHandler();  // 暂时不用
 
-    public <T> T query(String sql, Object[] parameters) {
+    public <T> T query(String sql, Object[] parameters, Class<T> clazz) {
 
-        Connection connection;
+        Connection connection = null;  // 连接
         PreparedStatement ps = null;
+        T t = null;
         try {
             connection = getConnection();
             ps = connection.prepareStatement(sql);
             ParameterHandler ph = new ParameterHandler(ps);
             ph.setParameters(parameters);
+            ResultSet resultSet = ps.executeQuery();
+            t = resultSetHandler.handler(resultSet, clazz);
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                connection = null;
+            }
         }
-        return null;
+        return t;
     }
 
     private Connection getConnection() {

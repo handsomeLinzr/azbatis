@@ -15,9 +15,11 @@ import java.lang.reflect.Proxy;
 public class MapperProxyFactory<T> {
 
     private final Class<T> mapperInterface;
+    private final Class<?> pojoClass;
 
-    public MapperProxyFactory(Class<T> clazz) {
+    public MapperProxyFactory(Class<T> clazz, Class<?> pojoClass) {
         this.mapperInterface = clazz;
+        this.pojoClass = pojoClass;
     }
 
     /**
@@ -29,7 +31,7 @@ public class MapperProxyFactory<T> {
         return (T) Proxy.newProxyInstance(
                 mapperInterface.getClassLoader(),
                 new Class[] {mapperInterface},
-                new MapperProxy(sqlSession)
+                new MapperProxy(sqlSession, pojoClass)
         );
     }
 }

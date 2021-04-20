@@ -15,10 +15,12 @@ import java.lang.reflect.Method;
  */
 public class MapperProxy implements InvocationHandler {
 
-    private DefaultSqlSession sqlSession;
+    private final DefaultSqlSession sqlSession;
+    private final Class<?> clazz;
 
-    public MapperProxy(DefaultSqlSession sqlSession) {
+    public MapperProxy(DefaultSqlSession sqlSession, Class<?> clazz) {
         this.sqlSession = sqlSession;
+        this.clazz = clazz;
     }
 
     @Override
@@ -28,7 +30,7 @@ public class MapperProxy implements InvocationHandler {
         } else {
             String statementId = method.getDeclaringClass().getName() + "." + method.getName();
             if (sqlSession.getConfiguration().hasStatementId(statementId)) {
-                return sqlSession.selectOne(statementId, args);
+                return sqlSession.selectOne(statementId, args, clazz);
             } else {  // statementId没有记录的方法
                 return method.invoke(this, args);
             }

@@ -17,7 +17,7 @@ public class CacheExecutor implements Executor{
     }
 
     @Override
-    public <T> T query(String sql, Object[] parameters) {
+    public <T> T query(String sql, Object[] parameters, Class<T> clazz) {
         return null;
     }
 }

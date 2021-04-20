@@ -1,13 +1,13 @@
 package com.azhe.azbatis.v2.session;
 
 import com.azhe.azbatis.v2.binding.MapperRegistry;
+import com.azhe.azbatis.v2.boot.MyBatisBoot;
 import com.azhe.azbatis.v2.executor.CacheExecutor;
 import com.azhe.azbatis.v2.executor.Executor;
 import com.azhe.azbatis.v2.executor.SimpleExecutor;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.io.File;
+import java.util.*;
 
 /**
  * Description: 获取并记录全局配置
@@ -24,6 +24,9 @@ public class Configuration {
 
     private Map<String, String> mapperStatements = new HashMap<>();  // 用于保存statementId 和 sql的关系
     private MapperRegistry mapperRegistry = new MapperRegistry();  // 保存mapper和代理工厂的关系
+
+    private final List<Class<?>> mapperList = new ArrayList<>();  // 存放mapper类
+    private final List<String> classPaths = new ArrayList<>();  // 存放路径下的所有class文件
 
     static {
         SQL_MAPPINGS = ResourceBundle.getBundle("sql");
@@ -42,14 +45,52 @@ public class Configuration {
             String pojoStr = value.split("--")[1];  // 返回对象
             String mapperClassStr = key.substring(0, key.lastIndexOf("."));  // mapper对象
             Class<?> clazz = null;  // mapper接口
+            Class<?> pojoClass = null;  // 返回对象的类
             try {
                 clazz = Class.forName(mapperClassStr);
+                pojoClass = Class.forName(pojoStr);
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-            mapperRegistry.addMapper(clazz);
+            mapperRegistry.addMapper(clazz, pojoClass);
             mapperStatements.put(key, sql);
         }
+
+        // 2.解析注解
+        String mapperPath = PROPERTIES.getString("mapper.path");
+        scanPackage(mapperPath);  // 扫描包，将包的所有类存放到mapperList中
+        for (Class<?> mapperClass : mapperList) {
+            parsingClass(mapperClass);  // 解析mapperClass
+        }
+    }
+
+    /**
+     * 扫描包将mapper类存起来
+     * @param mapperPath
+     */
+    private void scanPackage(String mapperPath) {
+        String basePath = MyBatisBoot.class.getResource("/").getPath();
+        String packagePath = basePath + mapperPath;
+        doScan(new File(packagePath));  // 扫描路径下的所有class文件
+        for (String classPath : classPaths) {
+            
+        }
+    }
+
+    /**
+     * 解析mapper类
+     * @param mapperClass
+     */
+    private void parsingClass(Class<?> mapperClass) {
+
+    }
+
+    /**
+     * 扫描路径下的所有class文件到classPaths中
+     * @param file
+     */
+    private void doScan(File file) {
+
     }
 
     /**

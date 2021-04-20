@@ -11,10 +11,10 @@ package com.azhe.azbatis.v2.executor;
 public class SimpleExecutor implements Executor {
 
     @Override
-    public <T> T query(String sql, Object[] parameters) {
+    public <T> T query(String sql, Object[] parameters, Class<T> clazz) {
 
         // 创建一个执行处理器，并调用
         StatementHandler statementHandler = new StatementHandler();
-        return statementHandler.query(sql, parameters);
+        return statementHandler.query(sql, parameters, clazz);
     }
 }
