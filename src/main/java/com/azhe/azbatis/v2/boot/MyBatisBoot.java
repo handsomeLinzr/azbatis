@@ -5,6 +5,8 @@ import com.azhe.azbatis.v2.mapper.BlogMapper;
 import com.azhe.azbatis.v2.session.DefaultSqlSession;
 import com.azhe.azbatis.v2.session.SqlSessionFactory;
 
+import java.util.List;
+
 /**
  * Description:
  *
@@ -20,7 +22,6 @@ public class MyBatisBoot {
         DefaultSqlSession sqlSession = sqlSessionFactory.openSession();
         BlogMapper mapper = sqlSession.getMapper(BlogMapper.class);
         Blog blog = mapper.selectBlogById(1);
-        Blog blog1 = mapper.selectBlogById(1);
         System.out.println(blog);
     }
 

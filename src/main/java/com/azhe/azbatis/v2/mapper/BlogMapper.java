@@ -3,6 +3,8 @@ package com.azhe.azbatis.v2.mapper;
 import com.azhe.azbatis.v2.annotation.Entity;
 import com.azhe.azbatis.v2.annotation.Select;
 
+import java.util.List;
+
 @Entity(Blog.class)
 public interface BlogMapper {
     /**

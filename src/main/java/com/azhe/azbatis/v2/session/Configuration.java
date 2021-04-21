@@ -6,6 +6,8 @@ import com.azhe.azbatis.v2.binding.MapperRegistry;
 import com.azhe.azbatis.v2.executor.CacheExecutor;
 import com.azhe.azbatis.v2.executor.Executor;
 import com.azhe.azbatis.v2.executor.SimpleExecutor;
+import com.azhe.azbatis.v2.plugin.Interceptor;
+import com.azhe.azbatis.v2.plugin.InterceptorChain;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -26,6 +28,7 @@ public class Configuration {
 
     private Map<String, String> mapperStatements = new HashMap<>();  // 用于保存statementId 和 sql的关系
     private MapperRegistry mapperRegistry = new MapperRegistry();  // 保存mapper和代理工厂的关系
+    private InterceptorChain interceptorChain = new InterceptorChain();  // 拦截器链
 
     private final List<Class<?>> mapperList = new ArrayList<>();  // 存放mapper类
     private final List<String> classPaths = new ArrayList<>();  // 存放路径下的所有class文件
@@ -64,6 +67,21 @@ public class Configuration {
             parsingClass(mapperClass);  // 解析mapperClass
         }
 
+        // 解析拦截器
+        if (PROPERTIES.containsKey("plugin.path")) {
+            String pluginPaths = PROPERTIES.getString("plugin.path");
+            String[] plugin = pluginPaths.split(",");  // 获得插件路径
+            for (String p : plugin) {
+                Interceptor interceptor = null;
+                try {
+                    // 拦截器
+                    interceptor = (Interceptor) Class.forName(p).newInstance();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                interceptorChain.addInterceptor(interceptor);
+            }
+        }
 
     }
 
@@ -78,6 +96,9 @@ public class Configuration {
             executor = new SimpleExecutor();
         } else {
             executor = new CacheExecutor(new SimpleExecutor());
+        }
+        if (interceptorChain.hasInterceptors()) {
+            executor = (Executor) interceptorChain.pluginAll(executor);
         }
         return executor;
     }

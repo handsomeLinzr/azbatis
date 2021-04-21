@@ -28,6 +28,7 @@ public class CacheExecutor implements Executor{
         cacheKey.update(sql);
         cacheKey.update(joinStr(parameters));
         if (cache.containsKey(cacheKey.getCode())) {
+            System.out.println("命中一级缓存");
             return (T) cache.get(cacheKey.getCode());
         }
         T result = this.delegate.query(sql, parameters, clazz);
