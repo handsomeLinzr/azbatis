@@ -38,7 +38,6 @@ public class StatementHandler {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                connection = null;
             }
         }
         return t;
