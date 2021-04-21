@@ -1,9 +1,13 @@
 package com.azhe.azbatis.v2.boot;
 
+import com.azhe.azbatis.v2.binding.MapperProxy;
 import com.azhe.azbatis.v2.mapper.Blog;
 import com.azhe.azbatis.v2.mapper.BlogMapper;
 import com.azhe.azbatis.v2.session.DefaultSqlSession;
 import com.azhe.azbatis.v2.session.SqlSessionFactory;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Description:
@@ -20,6 +24,7 @@ public class MyBatisBoot {
         DefaultSqlSession sqlSession = sqlSessionFactory.openSession();
         BlogMapper mapper = sqlSession.getMapper(BlogMapper.class);
         Blog blog = mapper.selectBlogById(2);
+        Blog blog1 = mapper.selectBlogById(2);
         System.out.println(blog);
     }
 

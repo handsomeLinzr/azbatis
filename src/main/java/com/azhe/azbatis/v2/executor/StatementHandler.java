@@ -18,7 +18,6 @@ public class StatementHandler {
     private ResultSetHandler resultSetHandler = new ResultSetHandler();  // 暂时不用
 
     public <T> T query(String sql, Object[] parameters, Class<T> clazz) {
-
         Connection connection = null;  // 连接
         PreparedStatement ps = null;
         T t = null;
@@ -27,6 +26,7 @@ public class StatementHandler {
             ps = connection.prepareStatement(sql);
             ParameterHandler ph = new ParameterHandler(ps);
             ph.setParameters(parameters);
+            System.out.println("----------执行sql--------------" + sql);
             ResultSet resultSet = ps.executeQuery();
             t = resultSetHandler.handler(resultSet, clazz);
         } catch (Exception e) {
@@ -45,7 +45,6 @@ public class StatementHandler {
     }
 
     private Connection getConnection() {
-        String driver = Configuration.PROPERTIES.getString("jdbc.driver");
         String url = Configuration.PROPERTIES.getString("jdbc.url");
         String username = Configuration.PROPERTIES.getString("jdbc.username");
         String password = Configuration.PROPERTIES.getString("jdbc.password");
@@ -53,8 +52,8 @@ public class StatementHandler {
         Connection connection = null;
         try {
             connection = DriverManager.getConnection(url, username, password);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return connection;
     }
