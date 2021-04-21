@@ -1,7 +1,6 @@
 package com.azhe.azbatis.v2.session;
 
 import com.azhe.azbatis.v2.executor.Executor;
-import com.azhe.azbatis.v2.executor.SimpleExecutor;
 
 /**
  * Description: 会话

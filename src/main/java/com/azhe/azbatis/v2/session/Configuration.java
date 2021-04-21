@@ -64,6 +64,7 @@ public class Configuration {
         for (Class<?> mapperClass : mapperList) {
             parsingClass(mapperClass);  // 解析mapperClass
         }
+
     }
 
     /**
@@ -71,11 +72,12 @@ public class Configuration {
      * @return
      */
     public Executor newExecutor() {
-        Executor executor = null;
-        if (PROPERTIES.containsKey("cache.enabled") && PROPERTIES.getString("cache.enabled").equals("true")) {
-            executor = new CacheExecutor(new SimpleExecutor());
-        } else {
+        // 默认用一级缓存
+        Executor executor;
+        if (PROPERTIES.containsKey("cache.enabled") && PROPERTIES.getString("cache.enabled").equals("false")) {
             executor = new SimpleExecutor();
+        } else {
+            executor = new CacheExecutor(new SimpleExecutor());
         }
         return executor;
     }
