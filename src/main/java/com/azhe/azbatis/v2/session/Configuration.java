@@ -3,11 +3,9 @@ package com.azhe.azbatis.v2.session;
 import com.azhe.azbatis.v2.annotation.Entity;
 import com.azhe.azbatis.v2.annotation.Select;
 import com.azhe.azbatis.v2.binding.MapperRegistry;
-import com.azhe.azbatis.v2.boot.MyBatisBoot;
 import com.azhe.azbatis.v2.executor.CacheExecutor;
 import com.azhe.azbatis.v2.executor.Executor;
 import com.azhe.azbatis.v2.executor.SimpleExecutor;
-import com.azhe.azbatis.v2.plugin.InterceptorChain;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -28,7 +26,6 @@ public class Configuration {
 
     private Map<String, String> mapperStatements = new HashMap<>();  // 用于保存statementId 和 sql的关系
     private MapperRegistry mapperRegistry = new MapperRegistry();  // 保存mapper和代理工厂的关系
-    private InterceptorChain interceptorChain = new InterceptorChain();  // 拦截器链
 
     private final List<Class<?>> mapperList = new ArrayList<>();  // 存放mapper类
     private final List<String> classPaths = new ArrayList<>();  // 存放路径下的所有class文件
@@ -66,9 +63,6 @@ public class Configuration {
         for (Class<?> mapperClass : mapperList) {
             parsingClass(mapperClass);  // 解析mapperClass
         }
-
-        //3.扫描插件
-        String pluginPath = PROPERTIES.getString("plugin.path");
 
 
     }
